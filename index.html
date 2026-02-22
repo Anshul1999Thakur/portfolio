@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Anshul Thakur — Open to Work</title>
+<meta name="description" content="Anshul Thakur — Junior .NET Developer. Open for Full-Time & Remote opportunities."/>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{--white:#f5f5f7;--gray:#1d1d1f;--muted:#6e6e73;--accent:#00D4FF;--green:#30d158;--border:rgba(255,255,255,0.07);}
+html{scroll-behavior:smooth;}
+body{background:#000;color:var(--white);font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;overflow-x:hidden;cursor:none;}
+.cur-dot{width:8px;height:8px;background:#fff;border-radius:50%;position:fixed;top:0;left:0;pointer-events:none;z-index:9999;transition:width .15s,height .15s,background .15s;}
+.cur-ring{width:38px;height:38px;border:1px solid rgba(255,255,255,0.3);border-radius:50%;position:fixed;top:0;left:0;pointer-events:none;z-index:9998;transition:width .3s,height .3s,border-color .3s;}
+body.hov .cur-dot{width:14px;height:14px;background:var(--accent);}
+body.hov .cur-ring{width:54px;height:54px;border-color:rgba(0,212,255,0.4);}
+::-webkit-scrollbar{width:3px;}::-webkit-scrollbar-track{background:#000;}::-webkit-scrollbar-thumb{background:#222;border-radius:2px;}
+
+/* OFW BAR */
+.ofw{background:linear-gradient(90deg,#0a2a0a,#0d3d0d,#0a2a0a);border-bottom:1px solid rgba(48,209,88,0.22);text-align:center;padding:.6rem 1rem;position:fixed;top:0;left:0;right:0;z-index:300;display:flex;align-items:center;justify-content:center;gap:.75rem;animation:barP 3s ease-in-out infinite;}
+@keyframes barP{0%,100%{background:linear-gradient(90deg,#0a2a0a,#0d3d0d,#0a2a0a);}50%{background:linear-gradient(90deg,#0d3d0d,#124a12,#0d3d0d);}}
+.ofw-dot{width:8px;height:8px;background:var(--green);border-radius:50%;box-shadow:0 0 8px var(--green);animation:blink 1.5s ease-in-out infinite;}
+@keyframes blink{0%,100%{opacity:1;}50%{opacity:.4;}}
+.ofw-txt{font-size:.74rem;font-weight:500;color:#86efac;letter-spacing:.3px;}
+.ofw-txt strong{color:var(--green);}
+.ofw-badge{padding:.2rem .65rem;background:rgba(48,209,88,0.14);border:1px solid rgba(48,209,88,0.28);border-radius:20px;font-size:.66rem;font-weight:600;color:var(--green);letter-spacing:.5px;}
+
+/* NAV */
+nav{position:fixed;top:36px;left:0;right:0;z-index:200;height:52px;display:flex;align-items:center;justify-content:space-between;padding:0 2.5rem;background:rgba(0,0,0,0.75);backdrop-filter:saturate(180%) blur(20px);border-bottom:1px solid var(--border);}
+.nav-logo{font-size:1.05rem;font-weight:600;letter-spacing:-.3px;color:var(--white);text-decoration:none;}
+.nav-links{display:flex;gap:2rem;list-style:none;}
+.nav-links a{font-size:.76rem;color:rgba(255,255,255,0.6);text-decoration:none;transition:color .2s;}
+.nav-links a:hover{color:#fff;}
+.nav-right{display:flex;align-items:center;gap:.7rem;}
+.nbtn{padding:.38rem .95rem;border-radius:980px;font-size:.72rem;font-weight:500;text-decoration:none;transition:all .2s;display:flex;align-items:center;gap:.4rem;}
+.nbtn-green{background:rgba(48,209,88,0.1);color:var(--green);border:1px solid rgba(48,209,88,0.22);}
+.nbtn-green:hover{background:rgba(48,209,88,0.18);}
+.nbtn-blue{background:var(--accent);color:#000;font-weight:600;}
+.nbtn-blue:hover{background:#33ddff;box-shadow:0 0 18px rgba(0,212,255,0.35);}
+
+/* HERO */
+#hero{height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;position:relative;overflow:hidden;padding-top:88px;}
+#hero-canvas{position:absolute;inset:0;width:100%;height:100%;}
+.hero-inner{position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;}
+.hero-status{display:inline-flex;align-items:center;gap:.5rem;padding:.38rem 1rem;background:rgba(48,209,88,0.07);border:1px solid rgba(48,209,88,0.18);border-radius:980px;margin-bottom:1.6rem;opacity:0;transform:translateY(16px);animation:rev .8s cubic-bezier(.16,1,.3,1) forwards .2s;}
+.hsdot{width:7px;height:7px;background:var(--green);border-radius:50%;box-shadow:0 0 6px var(--green);animation:blink 1.5s ease-in-out infinite;}
+.hstxt{font-size:.72rem;font-weight:500;color:#86efac;letter-spacing:.3px;}
+.hero-name{font-size:clamp(3rem,8.5vw,7rem);font-weight:700;letter-spacing:-2.5px;line-height:1;margin-bottom:1.1rem;opacity:0;transform:translateY(26px);animation:rev 1s cubic-bezier(.16,1,.3,1) forwards .4s;background:linear-gradient(180deg,#fff 0%,rgba(255,255,255,0.55) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.hero-role{font-size:clamp(.9rem,2vw,1.2rem);font-weight:300;color:var(--muted);margin-bottom:.75rem;letter-spacing:-.2px;opacity:0;transform:translateY(16px);animation:rev .9s cubic-bezier(.16,1,.3,1) forwards .6s;}
+.hero-role span{color:var(--white);font-weight:500;}
+.hero-tags{display:flex;gap:.45rem;margin-bottom:2.1rem;justify-content:center;flex-wrap:wrap;opacity:0;transform:translateY(14px);animation:rev .9s cubic-bezier(.16,1,.3,1) forwards .75s;}
+.ht{padding:.28rem .75rem;border-radius:980px;font-size:.71rem;font-weight:500;letter-spacing:.3px;}
+.ht-blue{background:rgba(0,212,255,0.09);border:1px solid rgba(0,212,255,0.2);color:var(--accent);}
+.ht-gray{background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.11);color:rgba(255,255,255,0.6);}
+.hero-actions{display:flex;gap:.8rem;flex-wrap:wrap;justify-content:center;opacity:0;animation:rev .9s cubic-bezier(.16,1,.3,1) forwards .95s;}
+.pill{padding:.72rem 1.6rem;border-radius:980px;font-size:.83rem;font-weight:500;text-decoration:none;transition:all .25s;display:flex;align-items:center;gap:.45rem;}
+.p-solid{background:var(--accent);color:#000;font-weight:600;}
+.p-solid:hover{background:#33ddff;box-shadow:0 0 32px rgba(0,212,255,0.42);}
+.p-green{background:rgba(48,209,88,0.1);color:var(--green);border:1px solid rgba(48,209,88,0.22);}
+.p-green:hover{background:rgba(48,209,88,0.18);}
+.p-ghost{background:rgba(255,255,255,0.07);color:#fff;border:1px solid rgba(255,255,255,0.11);}
+.p-ghost:hover{background:rgba(255,255,255,0.13);}
+.hero-scroll{position:absolute;bottom:2.5rem;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:.5rem;opacity:0;animation:rev 1s ease forwards 1.4s;}
+.hero-scroll span{font-size:.61rem;letter-spacing:2px;text-transform:uppercase;color:var(--muted);}
+.sbox{width:1.4rem;height:2.3rem;border:1.5px solid rgba(255,255,255,0.15);border-radius:20px;display:flex;justify-content:center;padding-top:5px;}
+.sball{width:4px;height:7px;background:var(--accent);border-radius:4px;animation:sb 2s ease-in-out infinite;}
+@keyframes sb{0%,100%{transform:translateY(0);opacity:1;}80%{transform:translateY(9px);opacity:.2;}}
+@keyframes rev{to{opacity:1;transform:translateY(0);}}
+
+/* SNAPSHOT */
+#snapshot{padding:5rem 2rem;max-width:1000px;margin:0 auto;}
+.snap-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;}
+.snap-card{background:var(--gray);border-radius:20px;padding:1.85rem;border:1px solid var(--border);text-align:center;transition:all .3s cubic-bezier(.16,1,.3,1);position:relative;overflow:hidden;}
+.snap-card:hover{transform:translateY(-5px);box-shadow:0 22px 45px rgba(0,0,0,0.5);}
+.snap-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--accent),transparent);opacity:0;transition:opacity .3s;}
+.snap-card:hover::before{opacity:1;}
+.snap-num{font-size:2.6rem;font-weight:700;letter-spacing:-1.5px;color:var(--accent);line-height:1;margin-bottom:.4rem;}
+.snap-lbl{font-size:.76rem;color:var(--muted);line-height:1.45;}
+
+/* ABOUT */
+#about{min-height:80vh;display:flex;flex-direction:column;justify-content:center;padding:6rem 2rem;max-width:900px;margin:0 auto;}
+.big-stmt{font-size:clamp(1.75rem,3.8vw,3.3rem);font-weight:600;line-height:1.22;letter-spacing:-1.1px;color:var(--muted);}
+.big-stmt .lit{color:var(--white);}
+.chips{display:flex;flex-wrap:wrap;gap:.48rem;margin-top:2.4rem;}
+.chip{padding:.36rem .88rem;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);border-radius:980px;font-size:.74rem;color:rgba(255,255,255,0.58);transition:all .2s;}
+.chip:hover{background:rgba(0,212,255,0.08);border-color:rgba(0,212,255,0.22);color:var(--accent);}
+
+/* SKILLS */
+#skills{padding:5rem 2rem;max-width:1100px;margin:0 auto;}
+.bento-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;}
+.bento{background:var(--gray);border-radius:20px;padding:1.8rem;position:relative;overflow:hidden;transition:transform .3s cubic-bezier(.16,1,.3,1),box-shadow .3s;border:1px solid var(--border);}
+.bento:hover{transform:scale(1.025);box-shadow:0 26px 52px rgba(0,0,0,0.5);}
+.bento.wide{grid-column:span 2;}
+.b-lbl{font-size:.64rem;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--accent);margin-bottom:.78rem;}
+.b-ti{font-size:1.25rem;font-weight:700;letter-spacing:-.4px;margin-bottom:.82rem;line-height:1.2;}
+.b-tags{display:flex;flex-wrap:wrap;gap:.3rem;}
+.btag{padding:.25rem .6rem;background:rgba(255,255,255,0.06);border-radius:6px;font-size:.68rem;color:rgba(255,255,255,0.56);transition:all .2s;}
+.btag:hover{background:rgba(0,212,255,0.1);color:var(--accent);}
+.b-ico{font-size:2.5rem;position:absolute;bottom:1.2rem;right:1.2rem;opacity:.1;}
+.b-acc{background:linear-gradient(135deg,#00D4FF10,#00D4FF03);border-color:rgba(0,212,255,0.1);}
+.b-dk{background:#111;}
+
+/* EXPERIENCE */
+#experience{padding:5rem 2rem;max-width:780px;margin:0 auto;}
+.exp-item{padding:2.2rem 0;border-top:1px solid rgba(255,255,255,0.07);display:grid;grid-template-columns:148px 1fr;gap:2rem;}
+.exp-date{font-size:.74rem;color:var(--muted);padding-top:.18rem;line-height:1.55;}
+.cur-badge{display:inline-block;padding:.16rem .46rem;background:rgba(48,209,88,0.09);border:1px solid rgba(48,209,88,0.2);border-radius:4px;font-size:.59rem;color:var(--green);letter-spacing:1px;text-transform:uppercase;margin-top:.36rem;}
+.exp-role{font-size:1.12rem;font-weight:600;letter-spacing:-.3px;margin-bottom:.28rem;}
+.exp-co{font-size:.78rem;color:var(--muted);margin-bottom:.82rem;}
+.exp-desc{font-size:.82rem;color:rgba(255,255,255,0.46);line-height:1.75;margin-bottom:.82rem;}
+.exp-tags{display:flex;flex-wrap:wrap;gap:.3rem;}
+
+/* PROJECTS */
+#projects{padding:5rem 2rem;max-width:1100px;margin:0 auto;}
+.proj-big{background:var(--gray);border-radius:24px;overflow:hidden;display:grid;grid-template-columns:1fr 1fr;min-height:280px;border:1px solid var(--border);transition:transform .4s cubic-bezier(.16,1,.3,1),box-shadow .4s;margin-bottom:1.1rem;}
+.proj-big:hover{transform:translateY(-6px);box-shadow:0 38px 75px rgba(0,0,0,0.6);}
+.proj-big.rev .proj-vis{order:2;}.proj-big.rev .proj-inf{order:1;}
+.proj-vis{background:#111;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;min-height:230px;}
+.proj-glow{position:absolute;width:190px;height:190px;border-radius:50%;filter:blur(60px);opacity:.13;background:var(--accent);}
+.proj-ico{font-size:4rem;position:relative;z-index:1;filter:drop-shadow(0 0 22px rgba(0,212,255,0.22));}
+.proj-inf{padding:2.2rem;display:flex;flex-direction:column;justify-content:center;gap:.78rem;}
+.proj-n{font-size:.61rem;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--accent);}
+.proj-name{font-size:1.3rem;font-weight:700;letter-spacing:-.4px;line-height:1.25;}
+.proj-period{font-size:.69rem;color:var(--muted);}
+.proj-desc{font-size:.8rem;color:rgba(255,255,255,0.44);line-height:1.75;}
+.proj-tags{display:flex;flex-wrap:wrap;gap:.28rem;}
+.sm-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;}
+.sm-card{background:var(--gray);border-radius:18px;padding:1.55rem;border:1px solid var(--border);transition:all .3s cubic-bezier(.16,1,.3,1);position:relative;overflow:hidden;}
+.sm-card:hover{transform:translateY(-4px);box-shadow:0 16px 35px rgba(0,0,0,0.5);border-color:rgba(0,212,255,0.1);}
+.sm-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--accent),transparent);transform:scaleX(0);transform-origin:left;transition:transform .4s;}
+.sm-card:hover::before{transform:scaleX(1);}
+.sm-ico{font-size:1.75rem;margin-bottom:.75rem;}
+.sm-name{font-size:.9rem;font-weight:600;letter-spacing:-.23px;margin-bottom:.28rem;line-height:1.3;}
+.sm-period{font-size:.65rem;color:var(--muted);margin-bottom:.55rem;}
+.sm-desc{font-size:.73rem;color:rgba(255,255,255,0.38);line-height:1.62;}
+
+/* EDUCATION */
+#education{padding:5rem 2rem;max-width:1100px;margin:0 auto;}
+.edu-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem;}
+.edu-card{background:var(--gray);border-radius:20px;padding:2rem;border:1px solid var(--border);transition:all .3s;position:relative;overflow:hidden;}
+.edu-card:hover{transform:translateY(-4px);box-shadow:0 18px 42px rgba(0,0,0,0.5);}
+.edu-card::after{content:'';position:absolute;bottom:-22px;right:-22px;width:95px;height:95px;background:radial-gradient(circle,rgba(0,212,255,0.06) 0%,transparent 70%);border-radius:50%;}
+.edu-ico{font-size:1.75rem;margin-bottom:.95rem;}
+.edu-deg{font-size:1rem;font-weight:600;letter-spacing:-.25px;margin-bottom:.3rem;line-height:1.3;}
+.edu-uni{font-size:.75rem;color:var(--accent);margin-bottom:.62rem;font-weight:500;}
+.edu-meta{display:flex;align-items:center;gap:.58rem;flex-wrap:wrap;}
+.edu-yr{font-size:.7rem;color:var(--muted);}
+.edu-grade{padding:.18rem .52rem;background:rgba(0,212,255,0.08);border:1px solid rgba(0,212,255,0.15);border-radius:6px;font-size:.64rem;color:var(--accent);font-weight:600;}
+.cert-row{background:var(--gray);border-radius:18px;padding:1.55rem 2rem;border:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap;transition:all .3s;}
+.cert-row:hover{border-color:rgba(0,212,255,0.15);}
+.cert-left{display:flex;align-items:center;gap:.95rem;}
+.cert-ico{width:42px;height:42px;background:rgba(0,212,255,0.08);border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:1.2rem;flex-shrink:0;}
+.cert-name{font-size:.88rem;font-weight:500;letter-spacing:-.14px;margin-bottom:.16rem;}
+.cert-by{font-size:.68rem;color:var(--muted);}
+.cert-date{font-size:.69rem;color:var(--accent);font-weight:500;}
+
+/* CONTACT */
+#contact{padding:7rem 2rem;text-align:center;max-width:680px;margin:0 auto;}
+.hire-badge{display:inline-flex;align-items:center;gap:.48rem;padding:.38rem 1.05rem;background:rgba(48,209,88,0.07);border:1px solid rgba(48,209,88,0.18);border-radius:980px;margin-bottom:1.4rem;}
+.hire-badge-dot{width:7px;height:7px;background:var(--green);border-radius:50%;box-shadow:0 0 6px var(--green);animation:blink 1.5s ease-in-out infinite;}
+.hire-badge-txt{font-size:.71rem;font-weight:500;color:#86efac;}
+.hire-head{font-size:clamp(1.85rem,5vw,3.6rem);font-weight:700;letter-spacing:-1.5px;line-height:1.08;margin-bottom:1.2rem;background:linear-gradient(180deg,#fff,rgba(255,255,255,0.5));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.hire-sub{font-size:.93rem;color:var(--muted);margin-bottom:2.6rem;line-height:1.65;}
+.hire-sub span{color:var(--white);font-weight:500;}
+.clinks{display:flex;flex-direction:column;gap:.62rem;max-width:420px;margin:0 auto 2.4rem;}
+.clink{display:flex;align-items:center;gap:.88rem;padding:.88rem 1.3rem;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.07);border-radius:14px;text-decoration:none;transition:all .25s;}
+.clink:hover{background:rgba(0,212,255,0.05);border-color:rgba(0,212,255,0.15);transform:translateX(4px);}
+.clink-ico{width:35px;height:35px;background:rgba(255,255,255,0.05);border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:.95rem;flex-shrink:0;}
+.clink-lbl{font-size:.61rem;letter-spacing:1px;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:.1rem;}
+.clink-val{font-size:.83rem;color:var(--white);}
+.hire-actions{display:flex;gap:.8rem;justify-content:center;flex-wrap:wrap;}
+
+/* FOOTER */
+footer{border-top:1px solid var(--border);padding:1.5rem 2.5rem;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem;}
+footer p{font-size:.71rem;color:var(--muted);}
+.f-links{display:flex;gap:1.35rem;}
+.f-links a{font-size:.71rem;color:var(--muted);text-decoration:none;transition:color .2s;}
+.f-links a:hover{color:#fff;}
+
+/* SHARED */
+.sec-ey{font-size:.67rem;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:var(--accent);margin-bottom:.62rem;}
+.sec-ti{font-size:clamp(1.8rem,3.5vw,2.75rem);font-weight:700;letter-spacing:-.82px;margin-bottom:2.4rem;line-height:1.1;}
+
+/* REVEAL */
+.fi{opacity:0;transform:translateY(30px);transition:opacity .8s cubic-bezier(.16,1,.3,1),transform .8s cubic-bezier(.16,1,.3,1);}
+.fi.vis{opacity:1;transform:translateY(0);}
+.fi.d1{transition-delay:.1s;}.fi.d2{transition-delay:.2s;}.fi.d3{transition-delay:.3s;}
+
+@media(max-width:900px){
+  .ofw{flex-wrap:wrap;gap:.4rem;padding:.5rem .75rem;}
+  nav{top:52px;padding:0 1.2rem;}
+  .nav-links{display:none;}
+  #hero{padding-top:110px;}
+  #snapshot,#about,#skills,#experience,#projects,#education,#contact{padding:3.5rem 1.2rem;}
+  .snap-grid{grid-template-columns:repeat(2,1fr);}
+  .bento-grid{grid-template-columns:1fr;}.bento.wide{grid-column:span 1;}
+  .proj-big{grid-template-columns:1fr;}.proj-big.rev .proj-vis,.proj-big.rev .proj-inf{order:unset;}
+  .proj-vis{min-height:140px;}
+  .sm-grid{grid-template-columns:1fr 1fr;}
+  .edu-grid{grid-template-columns:1fr;}
+  .exp-item{grid-template-columns:1fr;gap:.35rem;}
+  footer{flex-direction:column;text-align:center;}
+}
+</style>
+</head>
+<body>
+
+<div class="cur-dot" id="curDot"></div>
+<div class="cur-ring" id="curRing"></div>
+
+<!-- OFW BAR -->
+<div class="ofw">
+  <div class="ofw-dot"></div>
+  <span class="ofw-txt"><strong>Open to Work</strong> — Actively looking for Full-Time &amp; Remote opportunities</span>
+  <span class="ofw-badge">Available Now</span>
+</div>
+
+<!-- NAV -->
+<nav>
+  <a href="#hero" class="nav-logo">Anshul Thakur</a>
+  <ul class="nav-links">
+    <li><a href="#snapshot">Overview</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#education">Education</a></li>
+  </ul>
+  <div class="nav-right">
+    <a href="https://www.linkedin.com/in/anshul-thakur-7344332b8" target="_blank" class="nbtn nbtn-green">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+      LinkedIn
+    </a>
+    <a href="Anshul_Thakur_Resume.pdf" download class="nbtn nbtn-blue">↓ Resume</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <canvas id="hero-canvas"></canvas>
+  <div class="hero-inner">
+    <div class="hero-status">
+      <div class="hsdot"></div>
+      <span class="hstxt">Open for Full-Time &amp; Remote Roles</span>
+    </div>
+    <h1 class="hero-name">Anshul Thakur</h1>
+    <p class="hero-role"><span>.NET Developer</span> &nbsp;·&nbsp; ASP.NET Core · Azure · React</p>
+    <div class="hero-tags">
+      <span class="ht ht-blue">Full-Time</span>
+      <span class="ht ht-blue">Remote</span>
+      <span class="ht ht-gray">Punjab, India</span>
+      <span class="ht ht-gray">1+ Yr Experience</span>
+    </div>
+    <div class="hero-actions">
+      <a href="#contact" class="pill p-solid">Hire Me →</a>
+      <a href="https://www.linkedin.com/in/anshul-thakur-7344332b8" target="_blank" class="pill p-green">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+        LinkedIn
+      </a>
+      <a href="Anshul_Thakur_Resume.pdf" download class="pill p-ghost">↓ Download Resume</a>
+    </div>
+  </div>
+  <div class="hero-scroll">
+    <div class="sbox"><div class="sball"></div></div>
+    <span>Scroll</span>
+  </div>
+</section>
+
+<!-- RECRUITER SNAPSHOT -->
+<section id="snapshot">
+  <div class="sec-ey fi" style="text-align:center;">Quick Overview for Recruiters</div>
+  <h2 class="sec-ti fi" style="text-align:center;">Why Hire Anshul?</h2>
+  <div class="snap-grid">
+    <div class="snap-card fi"><div class="snap-num">1+</div><div class="snap-lbl">Year Professional<br>.NET Experience</div></div>
+    <div class="snap-card fi d1"><div class="snap-num">6</div><div class="snap-lbl">Projects Delivered<br>End-to-End</div></div>
+    <div class="snap-card fi d2"><div class="snap-num">AI</div><div class="snap-lbl">ML.NET + GPT-4<br>Integration Experience</div></div>
+    <div class="snap-card fi d1"><div class="snap-num">☁️</div><div class="snap-lbl">Azure Cloud<br>Production Experience</div></div>
+    <div class="snap-card fi d2"><div class="snap-num">🔐</div><div class="snap-lbl">JWT &amp; AES Security<br>Implementation</div></div>
+    <div class="snap-card fi d3"><div class="snap-num">MCA</div><div class="snap-lbl">Master's in Computer<br>Applications — Grade A</div></div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <p class="big-stmt fi">
+    <span class="lit">Junior .NET Developer</span> with hands-on experience
+    building <span class="lit">secure, production-grade systems</span> —
+    AI maintenance tools, safety platforms &amp;
+    <span class="lit">enterprise web apps.</span>
+    I write <span class="lit">clean, maintainable code</span> and I'm
+    ready to <span class="lit">deliver value from day one.</span>
+  </p>
+  <div class="chips fi d2">
+    <span class="chip">ASP.NET Core</span><span class="chip">C#</span><span class="chip">React.js</span>
+    <span class="chip">Azure</span><span class="chip">ML.NET</span><span class="chip">GPT-4</span>
+    <span class="chip">SQL Server</span><span class="chip">Microservices</span>
+    <span class="chip">JWT &amp; AES</span><span class="chip">SOLID Principles</span>
+    <span class="chip">REST APIs</span><span class="chip">Entity Framework</span>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills">
+  <div class="sec-ey fi">Expertise</div>
+  <h2 class="sec-ti fi">Technical Skills</h2>
+  <div class="bento-grid">
+    <div class="bento b-acc wide fi">
+      <div class="b-lbl">Core Stack</div><div class="b-ti">Languages &amp; Frameworks</div>
+      <div class="b-tags"><span class="btag">C#</span><span class="btag">ASP.NET Core MVC</span><span class="btag">.NET APIs</span><span class="btag">SQL</span><span class="btag">React.js</span><span class="btag">JavaScript</span><span class="btag">Entity Framework</span></div>
+      <div class="b-ico">⚙️</div>
+    </div>
+    <div class="bento b-dk fi d1">
+      <div class="b-lbl">Cloud</div><div class="b-ti">Azure Services</div>
+      <div class="b-tags"><span class="btag">Microsoft Azure</span><span class="btag">Azure Blob Storage</span><span class="btag">Azure OpenAI</span><span class="btag">GPT-4</span></div>
+      <div class="b-ico">☁️</div>
+    </div>
+    <div class="bento b-dk fi d1">
+      <div class="b-lbl">AI / ML</div><div class="b-ti">Machine Learning</div>
+      <div class="b-tags"><span class="btag">ML.NET</span><span class="btag">Incident Prediction</span><span class="btag">Root Cause Analysis</span><span class="btag">AI Prompting</span></div>
+      <div class="b-ico">🤖</div>
+    </div>
+    <div class="bento b-dk fi d2">
+      <div class="b-lbl">Database</div><div class="b-ti">Data &amp; Storage</div>
+      <div class="b-tags"><span class="btag">SQL Server</span><span class="btag">Stored Procedures</span><span class="btag">Database Design</span></div>
+      <div class="b-ico">🗄️</div>
+    </div>
+    <div class="bento b-dk fi d2">
+      <div class="b-lbl">Security</div><div class="b-ti">Auth &amp; Encryption</div>
+      <div class="b-tags"><span class="btag">JWT Auth</span><span class="btag">AES Encryption</span><span class="btag">OAuth</span><span class="btag">Virus Detection</span></div>
+      <div class="b-ico">🔐</div>
+    </div>
+    <div class="bento b-acc fi d3">
+      <div class="b-lbl">Architecture</div><div class="b-ti">Clean Code</div>
+      <div class="b-tags"><span class="btag">SOLID Principles</span><span class="btag">Microservices</span><span class="btag">REST APIs</span><span class="btag">Git &amp; GitHub</span></div>
+      <div class="b-ico">🏗️</div>
+    </div>
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section id="experience">
+  <div class="sec-ey fi">Career</div>
+  <h2 class="sec-ti fi">Work Experience</h2>
+  <div class="exp-item fi">
+    <div class="exp-date">Feb 2025 — Present<div class="cur-badge">● Current</div></div>
+    <div>
+      <div class="exp-role">Junior Software Developer</div>
+      <div class="exp-co">CS Soft Solutions (India) Pvt Ltd</div>
+      <p class="exp-desc">Collaborated with development team to debug and resolve complex issues across frontend and backend. Worked on Safety First, Predictive Maintenance (ML.NET + GPT-4), Incident Log Management, Dealer Satisfaction Survey, and Shipcaddie — delivering production-grade enterprise solutions using ASP.NET Core, React, Azure, and SQL Server.</p>
+      <div class="exp-tags"><span class="btag">ASP.NET Core MVC</span><span class="btag">React.js</span><span class="btag">ML.NET</span><span class="btag">Azure OpenAI</span><span class="btag">SQL Server</span></div>
+    </div>
+  </div>
+  <div class="exp-item fi d1">
+    <div class="exp-date">Aug 2024 — Jan 2025</div>
+    <div>
+      <div class="exp-role">Internship Trainee</div>
+      <div class="exp-co">CS Soft Solutions (India) Pvt Ltd</div>
+      <p class="exp-desc">6-month internship focused on REST APIs, Swagger API, and web development fundamentals. Built strong backend foundations alongside experienced developers.</p>
+      <div class="exp-tags"><span class="btag">Swagger API</span><span class="btag">REST APIs</span><span class="btag">.NET</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <div class="sec-ey fi">Work</div>
+  <h2 class="sec-ti fi">Projects</h2>
+  <div class="proj-big fi">
+    <div class="proj-vis"><div class="proj-glow"></div><div class="proj-ico">🛡️</div></div>
+    <div class="proj-inf">
+      <div class="proj-n">Project 01</div>
+      <div class="proj-name">Safety First — Safety Management System</div>
+      <div class="proj-period">Jun 2025 — Present</div>
+      <p class="proj-desc">Secure RESTful APIs with JWT auth &amp; AES encryption. Azure Blob Storage + SMTP notifications. Third-party vulnerability scanning &amp; virus detection for full compliance.</p>
+      <div class="proj-tags"><span class="btag">ASP.NET Core</span><span class="btag">JWT</span><span class="btag">AES Encryption</span><span class="btag">Azure Blob</span><span class="btag">SQL Server</span></div>
+    </div>
+  </div>
+  <div class="proj-big rev fi">
+    <div class="proj-vis" style="background:#0a0a18;"><div class="proj-glow" style="background:#7c3aed;"></div><div class="proj-ico">🤖</div></div>
+    <div class="proj-inf">
+      <div class="proj-n">Project 02</div>
+      <div class="proj-name">Predictive Maintenance — ML.NET &amp; GPT-4</div>
+      <div class="proj-period">Dec 2025 — Feb 2026</div>
+      <p class="proj-desc">AI system predicting equipment failures using ML.NET for incident prediction, root cause analysis &amp; downtime estimation. GPT-4 for natural language preventive insights.</p>
+      <div class="proj-tags"><span class="btag">ML.NET</span><span class="btag">GPT-4</span><span class="btag">Azure OpenAI</span><span class="btag">C#</span></div>
+    </div>
+  </div>
+  <div class="sm-grid fi" style="margin-top:0;">
+    <div class="sm-card"><div class="sm-ico">📋</div><div class="sm-name">Incident Log Management</div><div class="sm-period">May – Jul 2025</div><p class="sm-desc">JWT auth, encryption, SOLID principles, microservices &amp; dynamic reporting graphs.</p></div>
+    <div class="sm-card d1"><div class="sm-ico">📊</div><div class="sm-name">Dealer Satisfaction Survey</div><div class="sm-period">Feb – Apr 2025</div><p class="sm-desc">Structured dealer categorization across segments, zones &amp; regions for comprehensive analytics.</p></div>
+    <div class="sm-card d2"><div class="sm-ico">🚢</div><div class="sm-name">Shipcaddie Logistics</div><div class="sm-period">Oct 2024 – Jan 2025</div><p class="sm-desc">Full-stack debugging &amp; FedEx certification API integration to strict technical specs.</p></div>
+    <div class="sm-card d3"><div class="sm-ico">📚</div><div class="sm-name">E-Commerce Book App</div><div class="sm-period">Jan – Mar 2024</div><p class="sm-desc">.NET Core MVC with SOLID principles, OAuth authentication &amp; Stripe payment gateway.</p></div>
+  </div>
+</section>
+
+<!-- EDUCATION -->
+<section id="education">
+  <div class="sec-ey fi">Background</div>
+  <h2 class="sec-ti fi">Education</h2>
+  <div class="edu-grid">
+    <div class="edu-card fi"><div class="edu-ico">🎓</div><div class="edu-deg">Master of Computer Applications (MCA)</div><div class="edu-uni">Chandigarh University</div><div class="edu-meta"><span class="edu-yr">Jun 2022 — May 2024</span><span class="edu-grade">Grade: A</span></div></div>
+    <div class="edu-card fi d1"><div class="edu-ico">📖</div><div class="edu-deg">Bachelor of Computer Application (BCA)</div><div class="edu-uni">Himachal Pradesh University</div><div class="edu-meta"><span class="edu-yr">Oct 2017 — Oct 2020</span><span class="edu-grade">Grade: A++</span></div></div>
+  </div>
+  <div class="cert-row fi">
+    <div class="cert-left"><div class="cert-ico">🏅</div><div><div class="cert-name">Developing Web Applications using ASP.NET Core MVC</div><div class="cert-by">Infosys Springboard</div></div></div>
+    <div class="cert-date">Issued Feb 2024</div>
+  </div>
+</section>
+
+<!-- HIRE ME -->
+<section id="contact">
+  <div class="hire-badge fi"><div class="hire-badge-dot"></div><span class="hire-badge-txt">Available for Immediate Joining</span></div>
+  <h2 class="hire-head fi">Let's work together.</h2>
+  <p class="hire-sub fi">Actively looking for <span>Full-Time &amp; Remote</span> opportunities in .NET development. If you're hiring — let's connect!</p>
+  <div class="clinks">
+    <a href="mailto:anshul1999thakur@gmail.com" class="clink fi"><div class="clink-ico">✉️</div><div><span class="clink-lbl">Email</span><span class="clink-val">anshul1999thakur@gmail.com</span></div></a>
+    <a href="tel:+917009305024" class="clink fi d1"><div class="clink-ico">📞</div><div><span class="clink-lbl">Phone</span><span class="clink-val">+91 7009305024</span></div></a>
+    <a href="https://www.linkedin.com/in/anshul-thakur-7344332b8" target="_blank" class="clink fi d2">
+      <div class="clink-ico"><svg width="15" height="15" viewBox="0 0 24 24" fill="#00D4FF"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg></div>
+      <div><span class="clink-lbl">LinkedIn</span><span class="clink-val">linkedin.com/in/anshul-thakur</span></div>
+    </a>
+    <div class="clink fi d2"><div class="clink-ico">📍</div><div><span class="clink-lbl">Location</span><span class="clink-val">Sahibzada Ajit Singh Nagar, Punjab, India</span></div></div>
+  </div>
+  <div class="hire-actions fi">
+    <a href="mailto:anshul1999thakur@gmail.com" class="pill p-solid">✉ Send Email</a>
+    <a href="https://www.linkedin.com/in/anshul-thakur-7344332b8" target="_blank" class="pill p-green">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+      Connect on LinkedIn
+    </a>
+    <a href="Anshul_Thakur_Resume.pdf" download class="pill p-ghost">↓ Download Resume</a>
+  </div>
+</section>
+
+<footer>
+  <p>© 2025 Anshul Thakur · Open for Full-Time &amp; Remote Opportunities</p>
+  <div class="f-links"><a href="#snapshot">Overview</a><a href="#projects">Projects</a><a href="#contact">Hire Me</a></div>
+</footer>
+
+<script>
+/* CURSOR */
+const dot=document.getElementById('curDot'),ring=document.getElementById('curRing');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;});
+(function a(){rx+=(mx-rx)*.1;ry+=(my-ry)*.1;dot.style.transform=`translate(${mx-4}px,${my-4}px)`;ring.style.transform=`translate(${rx-19}px,${ry-19}px)`;requestAnimationFrame(a);})();
+document.querySelectorAll('a,button,.snap-card,.bento,.proj-big,.sm-card,.edu-card,.clink,.chip').forEach(el=>{el.addEventListener('mouseenter',()=>document.body.classList.add('hov'));el.addEventListener('mouseleave',()=>document.body.classList.remove('hov'));});
+
+/* SCROLL REVEAL */
+const io=new IntersectionObserver(e=>{e.forEach(x=>{if(x.isIntersecting){x.target.classList.add('vis');io.unobserve(x.target);}});},{threshold:0.07});
+document.querySelectorAll('.fi').forEach(el=>io.observe(el));
+
+/* TEXT HIGHLIGHT */
+const stmt=document.querySelector('.big-stmt');
+if(stmt){const lits=stmt.querySelectorAll('.lit');window.addEventListener('scroll',()=>{const r=stmt.getBoundingClientRect();const p=Math.min(1,Math.max(0,(window.innerHeight-r.top)/(window.innerHeight+r.height)));lits.forEach((s,i)=>{s.style.color=p>(i+1)/(lits.length+1)?'#f5f5f7':'#6e6e73';});});}
+
+/* THREE.JS */
+const cv=document.getElementById('hero-canvas');
+const ren=new THREE.WebGLRenderer({canvas:cv,alpha:true,antialias:true});
+ren.setPixelRatio(Math.min(window.devicePixelRatio,2));
+ren.setSize(window.innerWidth,window.innerHeight);
+const sc=new THREE.Scene(),cam=new THREE.PerspectiveCamera(50,window.innerWidth/window.innerHeight,.1,1000);
+cam.position.z=3.5;
+const globe=new THREE.Mesh(new THREE.SphereGeometry(1,80,80),new THREE.MeshStandardMaterial({color:0x030810,metalness:.1,roughness:.9,transparent:true,opacity:.95}));
+sc.add(globe);
+sc.add(new THREE.Mesh(new THREE.SphereGeometry(1.003,36,36),new THREE.MeshBasicMaterial({color:0x00D4FF,wireframe:true,transparent:true,opacity:.07})));
+const N=600,dp=[];
+for(let i=0;i<N;i++){const phi=Math.acos(-1+(2*i)/N),th=Math.sqrt(N*Math.PI)*phi,r=1.005;dp.push(r*Math.sin(phi)*Math.cos(th),r*Math.sin(phi)*Math.sin(th),r*Math.cos(phi));}
+const dG=new THREE.BufferGeometry();dG.setAttribute('position',new THREE.Float32BufferAttribute(dp,3));
+const dots=new THREE.Points(dG,new THREE.PointsMaterial({color:0x00D4FF,size:.014,transparent:true,opacity:.6}));sc.add(dots);
+const r1=new THREE.Mesh(new THREE.TorusGeometry(1.38,.004,16,120),new THREE.MeshBasicMaterial({color:0x00D4FF,transparent:true,opacity:.28}));r1.rotation.x=Math.PI/2.2;sc.add(r1);
+const r2=new THREE.Mesh(new THREE.TorusGeometry(1.62,.002,16,120),new THREE.MeshBasicMaterial({color:0x00D4FF,transparent:true,opacity:.12}));r2.rotation.x=Math.PI/4;r2.rotation.y=Math.PI/6;sc.add(r2);
+const pp=[];for(let i=0;i<300;i++){const r=1.5+Math.random()*1.2,t=Math.random()*Math.PI*2,p=Math.random()*Math.PI;pp.push(r*Math.sin(p)*Math.cos(t),r*Math.sin(p)*Math.sin(t),r*Math.cos(p));}
+const pG=new THREE.BufferGeometry();pG.setAttribute('position',new THREE.Float32BufferAttribute(pp,3));
+const parts=new THREE.Points(pG,new THREE.PointsMaterial({color:0x00D4FF,size:.007,transparent:true,opacity:.18}));sc.add(parts);
+sc.add(new THREE.AmbientLight(0x001020,3));const dl=new THREE.DirectionalLight(0x00D4FF,1);dl.position.set(3,3,3);sc.add(dl);const pl=new THREE.PointLight(0x0044aa,1.5,10);pl.position.set(-3,-2,-2);sc.add(pl);
+const shift=1.15;[globe,dots,r1,r2,parts,...sc.children.filter(c=>c.type==='Mesh'&&c!==globe)].forEach(o=>{try{o.position.x=shift;}catch(e){}});
+sc.children.forEach(o=>{if(o.position)o.position.x=shift;});
+let tX=0,tY=0,sY=0;
+document.addEventListener('mousemove',e=>{tX=(e.clientX/window.innerWidth-.5)*.4;tY=(e.clientY/window.innerHeight-.5)*.3;});
+window.addEventListener('scroll',()=>sY=window.scrollY);
+(function anim(){requestAnimationFrame(anim);globe.rotation.y+=.0022;dots.rotation.y+=.0022;r1.rotation.z+=.0038;r2.rotation.z-=.0028;parts.rotation.y+=.0008;parts.rotation.x+=.0004;sc.rotation.x+=(tY-sc.rotation.x)*.035;sc.rotation.y+=(tX-sc.rotation.y)*.035;cv.style.opacity=Math.max(0,1-sY/(window.innerHeight*.7));ren.render(sc,cam);})();
+window.addEventListener('resize',()=>{cam.aspect=window.innerWidth/window.innerHeight;cam.updateProjectionMatrix();ren.setSize(window.innerWidth,window.innerHeight);});
+
+/* NAV ACTIVE */
+const secs=document.querySelectorAll('section[id]'),navAs=document.querySelectorAll('.nav-links a');
+window.addEventListener('scroll',()=>{let cur='';secs.forEach(s=>{if(window.scrollY>=s.offsetTop-130)cur=s.id;});navAs.forEach(a=>{a.style.color=a.getAttribute('href')==='#'+cur?'#fff':'';});});
+</script>
+</body>
+</html>
